@@ -59,14 +59,16 @@ const languageCodes = {
 };
 
 function main() {
-    
-    createCheckboxes();
+    //Initialize chrome keys 
+
+    //createCheckboxes();
 }
 
 function createCheckboxes() {
     const container = document.getElementById("container");
 
     const table = document.createElement("table");
+    //TODO add change all button here
 
     for (const [key, value] of Object.entries(languageCodes)) {
         const row = document.createElement("tr");
@@ -74,7 +76,24 @@ function createCheckboxes() {
         label.innerHTML = value;
         let checkbox = document.createElement('input');
         checkbox.type = "checkbox";
-
+        checkbox.id = key;  
+        checkbox.checked = true;
+        (async () => {
+            console.log("trying asycn");
+            try {
+                chrome.storage.local.get([key], function (result) {
+                    console.log(result[key]);
+                    checkbox.checked = result[key];
+                });
+                checkbox.addEventListener('change', function () {
+                    chrome.storage.local.set({ key: this.checked });
+                    console.log(key, this.checked);
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        })();
+        
         const cell1 = document.createElement("td");
         cell1.appendChild(label);
         const cell2 = document.createElement("td");
@@ -88,42 +107,9 @@ function createCheckboxes() {
     container.appendChild(table);
 }
 
-    /*
-    languageCodes.forEach(code => {
-        const row = document.createElement("tr");
-        let label = document.createElement('label');
-        label.innerHTML = "code";
-        let checkbox = document.createElement('input');
-        checkbox.type = "checkbox";
 
-        const cell1 = document.createElement("td");
-        cell1.appendChild(label);
-        const cell2 = document.createElement("td");
-        cell2.appendChild(checkbox);
-        
-        row.appendChild(cell1);
-        row.appendChild(cell2);
-
-        table.appendChild(row);
-    });
-    table.style.display = "show";
-
-    container.appendChild(table);
-}    
- /*
-    checkbox.type = "checkbox";
-    checkbox.name = "name";
-    checkbox.value = "value";
-    checkbox.id = "id";
-    checkbox.style.display = "show";
+function initKeys() {
+    //We check if the first code is assigned in chrome storage
+    const firstKey = Object.keys(languageCodes)[0];
     
-    let label = document.createElement('label');
-    label.htmlFor = "id";
-    label.appendChild(document.createTextNode('IN'));
-    
-    container.appendChild(checkbox);
-    container.appendChild(label);
-
-*/
-
-
+}
