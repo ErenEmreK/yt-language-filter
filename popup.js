@@ -62,6 +62,13 @@ function main() {
     //Initialize chrome keys 
 
     //createCheckboxes();
+
+    //initKeys();
+    chrome.storage.local.get(['myKey'], function(result) {
+        console.log('Data retrieved: ', result);
+        console.log('key:', result.myKey); // true
+      });
+
 }
 
 function createCheckboxes() {
@@ -108,8 +115,22 @@ function createCheckboxes() {
 }
 
 
-function initKeys() {
+async function initKeys() {
     //We check if the first code is assigned in chrome storage
+    //If not we assign every code to true for them to be active at first
     const firstKey = Object.keys(languageCodes)[0];
+    chrome.storage.local.get([firstKey], function(result) {
+        if (result[firstKey] === undefined) {
+            for (const [key, value] of Object.keys(languageCodes)) {
+                chrome.storage.local.set({ key: 'true' });
+                chrome.storage.local.get([key], function(result) {
+                    console.log('Data retrieved: ', result);
+                    console.log('key:', result[key]); // true
+                  });
+            }
+            console.log("All codes are set true.");
+        }
+    })
+    
     
 }
