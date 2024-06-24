@@ -11,8 +11,17 @@ body {
     flex-direction: column;
     align-items: center;
 }
+#button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 #change-button {
     height: fit-content;
     margin-bottom: 1px;
 }
-
+#disable-button {
+    height: fit-content;
+    margin-bottom: 1px;
+    padding-left: 2px;
+}

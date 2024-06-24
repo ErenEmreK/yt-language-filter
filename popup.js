@@ -7,12 +7,14 @@ function main() {
     .then(languageCodes => {
         const changeButton = document.getElementById('change-button');
         changeButton.addEventListener('click', changeAll);
+        const disableButton = document.getElementById('disable-button');
+        disableButton.addEventListener('click', onOff);
+        buttonName();
         createCheckboxes(languageCodes);
     })
     .catch(error => {
       console.error('Error fetching JSON:', error);
     });
-
 }
 
 function createCheckboxes(languageCodes) {
@@ -68,8 +70,32 @@ function changeAll() {
     }
 }
 
+function onOff() {
+    const button = document.getElementById('disable-button');
+    chrome.storage.local.get(['run'], function(result) {
+        if (result.run) {
+            console.log(result.run);
+            chrome.storage.local.set({ run: false });
+            button.innerHTML = "Enable LF";
+        } else {
+            console.log(result.run);
+            chrome.storage.local.set({ run: true });
+            button.innerHTML = "Disable LF";
+        }
+    })
+    
+}
 
-
+function buttonName() {
+    const button = document.getElementById('disable-button');
+    chrome.storage.local.get(['run'], function(result) {
+        if (result.run) {
+            button.innerHTML = "Disable LF";
+        } else {
+            button.innerHTML = "Enable LF";
+        }
+    })
+}
 
 
 

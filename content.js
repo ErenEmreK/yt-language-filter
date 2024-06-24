@@ -1,5 +1,9 @@
-window.addEventListener('load', main);
-      
+chrome.storage.local.get(['run'], function(result) {
+    if (result.run) {
+        window.addEventListener('load', main);
+    }
+});  
+
 async function main() {
     
     console.log("Hello from Language Filter!");

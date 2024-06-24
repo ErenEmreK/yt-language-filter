@@ -1,6 +1,8 @@
 
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === "install") {
+    chrome.storage.local.set({ run: true });
+
     fetch('languageCodes.json')
     .then(response => response.json())
     .then(languageCodes => {
