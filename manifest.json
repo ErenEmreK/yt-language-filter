@@ -13,6 +13,13 @@
       "service_worker": "background.js"
     },
 
+    "web_accessible_resources": [
+      {
+        "resources": ["languageCodes.json"],
+        "matches": ["<all_urls>"]
+      }
+    ],
+
     "action": {
       "default_popup": "popup.html"
     },
