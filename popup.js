@@ -59,23 +59,18 @@ const languageCodes = {
 };
 
 function main() {
-    //Initialize chrome keys 
+    const changeButton = document.getElementById('change-button');
+    changeButton.addEventListener('click', changeAll);
 
-    //createCheckboxes();
+    createCheckboxes(languageCodes);
 
-    //initKeys();
-    chrome.storage.local.get(['myKey'], function(result) {
-        console.log('Data retrieved: ', result);
-        console.log('key:', result.myKey); // true
-      });
 
 }
 
-function createCheckboxes() {
+function createCheckboxes(languageCodes) {
     const container = document.getElementById("container");
 
     const table = document.createElement("table");
-    //TODO add change all button here
 
     for (const [key, value] of Object.entries(languageCodes)) {
         const row = document.createElement("tr");
@@ -84,17 +79,13 @@ function createCheckboxes() {
         let checkbox = document.createElement('input');
         checkbox.type = "checkbox";
         checkbox.id = key;  
-        checkbox.checked = true;
         (async () => {
-            console.log("trying asycn");
             try {
                 chrome.storage.local.get([key], function (result) {
-                    console.log(result[key]);
                     checkbox.checked = result[key];
                 });
                 checkbox.addEventListener('change', function () {
-                    chrome.storage.local.set({ key: this.checked });
-                    console.log(key, this.checked);
+                    chrome.storage.local.set({ [key]: this.checked });
                 });
             } catch (error) {
                 console.error(error);
@@ -113,6 +104,29 @@ function createCheckboxes() {
     }
     container.appendChild(table);
 }
+
+function changeAll() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    if (checkboxes[0].checked) {
+        for (const box of checkboxes) {
+            box.checked = false;
+        }
+    } else {
+        for (const box of checkboxes) {
+            box.checked = true;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
 
 
 async function initKeys() {
