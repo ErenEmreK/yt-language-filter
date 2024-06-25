@@ -9,7 +9,7 @@ function main() {
         changeButton.addEventListener('click', changeAll);
         const disableButton = document.getElementById('disable-button');
         disableButton.addEventListener('click', onOff);
-        buttonName();
+        buttonInit();
         createCheckboxes(languageCodes);
     })
     .catch(error => {
@@ -71,14 +71,23 @@ function changeAll() {
 }
 
 function onOff() {
+    var labels = document.querySelectorAll('label');
     const button = document.getElementById('disable-button');
     chrome.storage.local.get(['run'], function(result) {
         if (result.run) {
-            console.log(result.run);
+            labels.forEach(function(label) {
+                label.style.textDecoration = "line-through";
+            });
+            document.body.style.filter = "grayscale(100%)";
+            
             chrome.storage.local.set({ run: false });
             button.innerHTML = "Enable LF";
+            
         } else {
-            console.log(result.run);
+            labels.forEach(function(label) {
+                label.style.textDecoration = "none";
+            });
+            document.body.style.filter = "none";
             chrome.storage.local.set({ run: true });
             button.innerHTML = "Disable LF";
         }
@@ -86,12 +95,17 @@ function onOff() {
     
 }
 
-function buttonName() {
+function buttonInit() {
     const button = document.getElementById('disable-button');
     chrome.storage.local.get(['run'], function(result) {
         if (result.run) {
             button.innerHTML = "Disable LF";
         } else {
+            var labels = document.querySelectorAll('label');
+            labels.forEach(function(label) {
+                label.style.textDecoration = "line-through";
+            });
+            document.body.style.filter = "grayscale(100%)";
             button.innerHTML = "Enable LF";
         }
     })
