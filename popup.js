@@ -9,7 +9,7 @@ function main() {
         changeButton.addEventListener('click', changeAll);
         const disableButton = document.getElementById('disable-button');
         disableButton.addEventListener('click', onOff);
-        buttonInit();
+        disableButtonInit();
         createCheckboxes(languageCodes);
     })
     .catch(error => {
@@ -95,7 +95,7 @@ function onOff() {
     
 }
 
-function buttonInit() {
+function disableButtonInit() {
     const button = document.getElementById('disable-button');
     chrome.storage.local.get(['run'], function(result) {
         if (result.run) {
